@@ -12,7 +12,7 @@ class ContactService:
 
     async def create_contact(self, contact_create: ContactCreate) -> Contact | None:
 
-        contact = self._get_contact_by_phone(contact_create.phone)
+        contact = await self._get_contact_by_phone(contact_create.phone)
 
         if contact is not None:
             raise
