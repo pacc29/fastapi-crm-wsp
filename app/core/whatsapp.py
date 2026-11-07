@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from pywa.utils import UserIdentifier
 from pywa_async.client import WhatsApp
 
 from app.core.settings import get_settings
@@ -15,5 +16,10 @@ def create_whatsapp(app: FastAPI) -> WhatsApp:
         webhook_endpoint="/webhook",
         app_id=settings.WHATSAPP_APP_ID,
         app_secret=settings.WHATSAPP_APP_SECRET,
+        user_identifier_priority=(
+            UserIdentifier.WA_ID,
+            UserIdentifier.BSUID,
+            UserIdentifier.PARENT_BSUID,
+        ),
         validate_updates=settings.WHATSAPP_VALIDATE_UPDATES,
     )
