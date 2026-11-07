@@ -18,4 +18,5 @@ def create_whatsapp(app: FastAPI) -> WhatsApp:
         webhook_challenge_delay=5,
         app_secret=settings.WHATSAPP_APP_SECRET,
         validate_updates=settings.WHATSAPP_VALIDATE_UPDATES,
+        filter_updates=False,
     )
