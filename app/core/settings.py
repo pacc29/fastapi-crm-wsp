@@ -14,6 +14,12 @@ class Settings(BaseSettings):
     DB_PASSWORD: str
     DB_ECHO: bool = False
 
+    WHATSAPP_PHONE_ID: str
+    WHATSAPP_TOKEN: str
+    WHATSAPP_VERIFY_TOKEN: str
+    WHATSAPP_APP_SECRET: str | None = None
+    WHATSAPP_VALIDATE_UPDATES: bool = False
+
     model_config = SettingsConfigDict(env_file=".env")
 
     @computed_field
