@@ -18,5 +18,6 @@ class ContactService:
             raise
 
         contact = Contact.model_validate(contact_create)
+        await self.contact_repository.create(contact)
         await self.contact_repository.commit()
-        return await self.contact_repository.create(contact)
+        return contact
