@@ -1,9 +1,7 @@
 from datetime import datetime
-from enum import StrEnum
-from typing import Any
 
 from sqlalchemy.dialects.postgresql import JSONB
-from sqlmodel import DateTime, Enum, Field, ForeignKey, String, Text
+from sqlmodel import DateTime, Enum, Field, ForeignKey, String
 
 from app.common.enums.message import MessageDirection, MessageStatus, MessageType
 from app.common.mixins.base_model import BaseModel, BaseSQLModel

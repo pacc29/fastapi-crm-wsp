@@ -9,8 +9,8 @@ from app.common.mixins.timestamp_model import TimeStampModel
 
 class ConversationBase(BaseSQLModel):
     status: ConversationStatus = Field(
-        sa_type=Enum(ConversationStatus),
         default=ConversationStatus.OPEN,
+        sa_type=Enum(ConversationStatus),
         nullable=False,
     )
     last_inbound_message: datetime = Field(
