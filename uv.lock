@@ -215,6 +215,7 @@ dependencies = [
     { name = "pywa", extra = ["server"] },
     { name = "sqlalchemy", extra = ["asyncio"] },
     { name = "sqlmodel" },
+    { name = "uvicorn", extra = ["standard"] },
 ]
 
 [package.metadata]
@@ -227,6 +228,7 @@ requires-dist = [
     { name = "pywa", extras = ["server"], specifier = ">=4.5.0" },
     { name = "sqlalchemy", extras = ["asyncio"], specifier = ">=2.1.6" },
     { name = "sqlmodel", specifier = ">=0.0.48" },
+    { name = "uvicorn", extras = ["standard"], specifier = ">=0.54.0" },
 ]
 
 [[package]]
