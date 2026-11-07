@@ -1,7 +1,7 @@
-from common.mixins.base_repository import BaseRepository
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
+from app.common.mixins.base_repository import BaseRepository
 from app.models.contact import Contact
 
 

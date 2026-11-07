@@ -1,11 +1,7 @@
-from typing import Annotated
+from fastapi import APIRouter
 
-from fastapi import APIRouter, Depends
-
-from app.dependencies import ContactServiceDep, SessionDep, get_contact_service
-from app.models.contact import Contact
+from app.dependencies import ContactServiceDep
 from app.schemas.contact import ContactCreate, ContactPublic
-from app.services.contact import ContactService
 
 contacts_router = APIRouter(prefix="/contacts", tags=["Contacts"])
 
