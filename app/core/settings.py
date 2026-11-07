@@ -17,11 +17,10 @@ class Settings(BaseSettings):
     WHATSAPP_PHONE_ID: str
     WHATSAPP_TOKEN: str
     WHATSAPP_VERIFY_TOKEN: str
-    WHATSAPP_APP_ID: str | None = None
-    WHATSAPP_APP_SECRET: str | None = None
-    WHATSAPP_CALLBACK_URL: str | None = None
-    WHATSAPP_REGISTER_CALLBACK_URL: bool = False
-    WHATSAPP_VALIDATE_UPDATES: bool = False
+    WHATSAPP_APP_ID: str
+    WHATSAPP_APP_SECRET: str
+    WHATSAPP_CALLBACK_URL: str
+    WHATSAPP_VALIDATE_UPDATES: bool = True
 
     model_config = SettingsConfigDict(env_file=".env")
 
