@@ -10,14 +10,13 @@ class ContactService:
     async def _get_contact_by_phone(self, phone: str):
         return await self.contact_repository.get_by_phone(phone)
 
-    async def create_contact(self, contact_create: ContactCreate) -> Contact | None:
+    async def create_contact(self, contact_create: ContactCreate) -> Contact:
 
         contact = await self._get_contact_by_phone(contact_create.phone)
 
         if contact is not None:
-            raise
+            return contact
 
         contact = Contact.model_validate(contact_create)
         await self.contact_repository.create(contact)
-        await self.contact_repository.commit()
         return contact

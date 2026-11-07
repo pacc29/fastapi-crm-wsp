@@ -21,7 +21,8 @@ def register_handlers(wa: WhatsApp) -> None:
         wa_id, name = _get_basic_info(msg)
 
         if not wa_id:
-            raise
+            print("No se encontro wa_id")
+            return
 
         async with async_session_factory() as session:
             try:
@@ -29,6 +30,11 @@ def register_handlers(wa: WhatsApp) -> None:
                 await contact_service.create_contact(
                     ContactCreate(phone=wa_id, name=name)
                 )
+
+            except RecipientNotInAllowedList:
+                print("Recipient not in allowed list")
+                raise
+
             except Exception:
                 await session.rollback()
                 raise
