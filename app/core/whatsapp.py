@@ -13,10 +13,9 @@ def create_whatsapp(app: FastAPI) -> WhatsApp:
         verify_token=settings.WHATSAPP_VERIFY_TOKEN,
         server=app,
         webhook_endpoint="/webhook",
-        # callback_url=settings.WHATSAPP_CALLBACK_URL,
+        callback_url=settings.WHATSAPP_CALLBACK_URL,
         app_id=settings.WHATSAPP_APP_ID,
-        # webhook_challenge_delay=5,
+        webhook_challenge_delay=5,
         app_secret=settings.WHATSAPP_APP_SECRET,
-        # validate_updates=settings.WHATSAPP_VALIDATE_UPDATES,
-        filter_updates=False,
+        validate_updates=settings.WHATSAPP_VALIDATE_UPDATES,
     )
