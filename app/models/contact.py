@@ -1,7 +1,12 @@
-from sqlmodel import Field, String
+from typing import TYPE_CHECKING
+
+from sqlmodel import Field, Relationship, String
 
 from app.common.mixins.base_model import BaseModel, BaseSQLModel
 from app.common.mixins.timestamp_model import TimeStampModel
+
+if TYPE_CHECKING:
+    from app.models.conversation import Conversation
 
 
 class ContactBase(BaseSQLModel):
@@ -14,4 +19,4 @@ class ContactBase(BaseSQLModel):
 
 
 class Contact(TimeStampModel, ContactBase, BaseModel, table=True):  # BD
-    pass
+    conversations: list["Conversation"] = Relationship(back_populates="contact")

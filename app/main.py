@@ -7,7 +7,7 @@ from app.core.settings import get_settings
 from app.core.whatsapp import create_whatsapp
 from app.db.database import engine
 from app.routers.contacts import contacts_router
-from app.services.webhook import register_handlers
+from app.services.whatsapp.webhook import register_handlers
 
 settings = get_settings()
 

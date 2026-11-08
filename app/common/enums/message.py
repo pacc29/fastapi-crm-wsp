@@ -8,7 +8,8 @@ class MessageDirection(StrEnum):
 
 class MessageStatus(StrEnum):
     SENT = "SENT"
+    DELIVERED = "DELIVERED"
+    READ = "READ"
+    RECIEVED = "RECIEVED"
 
 
-class MessageType(StrEnum):
-    TEXT = "TEXT"

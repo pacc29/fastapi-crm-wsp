@@ -11,12 +11,12 @@ class ContactService:
         return await self.contact_repository.get_by_phone(phone)
 
     async def create_contact(self, contact_create: ContactCreate) -> Contact:
-
-        contact = await self._get_contact_by_phone(contact_create.phone)
-
-        if contact is not None:
-            return contact
-
         contact = Contact.model_validate(contact_create)
         await self.contact_repository.create(contact)
         return contact
+
+    async def get_or_create_contact(self, phone: str, name: str | None) -> Contact:
+        contact = await self._get_contact_by_phone(phone)
+        if contact:
+            return contact
+        return await self.create_contact(ContactCreate(phone=phone, name=name))

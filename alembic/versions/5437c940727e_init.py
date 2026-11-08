@@ -1,8 +1,8 @@
 """init
 
-Revision ID: 0aa1325bd3c1
+Revision ID: 5437c940727e
 Revises: 
-Create Date: 2026-11-06 22:24:57.703659
+Create Date: 2026-11-07 20:11:27.489149
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision: str = '0aa1325bd3c1'
+revision: str = '5437c940727e'
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -35,6 +35,8 @@ def upgrade() -> None:
     sa.Column('updated_at', sa.DateTime(timezone=True), nullable=True),
     sa.Column('status', sa.Enum('OPEN', 'CLOSED', name='conversationstatus'), nullable=False),
     sa.Column('last_inbound_message', sa.DateTime(timezone=True), nullable=False),
+    sa.Column('contact_id', sa.Integer(), nullable=False),
+    sa.Column('chat_type', sa.Enum('PRIVATE', 'GROUP', 'UNKNOWN', name='chattype'), nullable=False),
     sa.Column('id', sa.Integer(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
@@ -42,9 +44,9 @@ def upgrade() -> None:
     sa.Column('conversation_id', sa.Integer(), nullable=False),
     sa.Column('wa_message_id', sa.String(length=255), nullable=False),
     sa.Column('direction', sa.Enum('INBOUND', 'OUTBOUND', name='messagedirection'), nullable=False),
-    sa.Column('status', sa.Enum('SENT', name='messagestatus'), nullable=False),
+    sa.Column('status', sa.Enum('SENT', 'DELIVERED', 'READ', 'FAILED', 'PLAYED', 'UNKNOWN', name='messagestatustype'), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
-    sa.Column('message_type', sa.Enum('TEXT', name='messagetype'), nullable=False),
+    sa.Column('message_type', sa.Enum('TEXT', 'IMAGE', 'VIDEO', 'DOCUMENT', 'AUDIO', 'STICKER', 'REACTION', 'LOCATION', 'CONTACTS', 'ORDER', 'UNKNOWN', 'UNSUPPORTED', 'INTERACTIVE', 'BUTTON', 'REQUEST_WELCOME', 'SYSTEM', 'EDIT', 'REVOKE', name='messagetype'), nullable=False),
     sa.Column('sent_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('delivered_at', sa.DateTime(timezone=True), nullable=True),
     sa.Column('read_at', sa.DateTime(timezone=True), nullable=True),
