@@ -65,7 +65,8 @@ class InboundService:
         return await self.message_service.create_message(message_create)
 
     async def save_text_message(self, msg: MessageAsync, conversation_id: int) -> None:
-        raw_message: dict = msg.raw.value["messages"][0]
+        # raw_message: dict = msg.raw.value["messages"][0]
+        raw_message: dict = msg.raw["entry"]
         await self._register_message(
             MessageCreate(
                 context=None,
