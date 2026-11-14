@@ -34,8 +34,8 @@ class MessageBase(BaseSQLModel):
     read_at: datetime | None = Field(
         default=None, sa_type=DateTime(timezone=True), nullable=True
     )
-    data: JsonB | None = Field(default=None, sa_type=JSONB, nullable=True)
-    context: JsonB | None = Field(default=None, sa_type=JSONB, nullable=True)
+    data: JsonB | None = Field(default=None, sa_type=JSONB(none_as_null=True), nullable=True)
+    context: JsonB | None = Field(default=None, sa_type=JSONB(none_as_null=True), nullable=True)
 
 
 class Message(BaseModel, MessageBase, table=True):
