@@ -19,4 +19,5 @@ class ContactBase(BaseSQLModel):
 
 
 class Contact(TimeStampModel, ContactBase, BaseModel, table=True):  # BD
+    __tablename__ = "contacts" # type: ignore[assignment]
     conversations: list["Conversation"] = Relationship(back_populates="contact")

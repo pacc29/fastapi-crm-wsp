@@ -1,17 +1,21 @@
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 from pywa.types.others import MessageType
 from pywa_async.types.message_status import MessageStatusType
 from sqlalchemy.dialects.postgresql import JSONB
-from sqlmodel import DateTime, Enum, Field, ForeignKey, String
+from sqlmodel import DateTime, Enum, Field, Relationship, String
 
 from app.common.enums.message import MessageDirection
 from app.common.mixins.base_model import BaseModel, BaseSQLModel
 from app.common.types import JsonB
 
+if TYPE_CHECKING:
+    from app.models.conversation import Conversation
+
 
 class MessageBase(BaseSQLModel):
-    conversation_id: int = Field(ForeignKey("conversations.id"), nullable=False)
+    conversation_id: int = Field(foreign_key="conversations.id", nullable=False)
     wa_message_id: str = Field(
         sa_type=String(255), nullable=False, unique=True, max_length=255, min_length=1
     )
@@ -27,7 +31,7 @@ class MessageBase(BaseSQLModel):
     delivered_at: datetime | None = Field(
         default=None, sa_type=DateTime(timezone=True), nullable=True
     )
-    read_at: datetime = Field(
+    read_at: datetime | None = Field(
         default=None, sa_type=DateTime(timezone=True), nullable=True
     )
     data: JsonB | None = Field(default=None, sa_type=JSONB, nullable=True)
@@ -35,4 +39,5 @@ class MessageBase(BaseSQLModel):
 
 
 class Message(BaseModel, MessageBase, table=True):
-    pass
+    __tablename__ = "messages" # type: ignore[assignment]
+    conversation: "Conversation" = Relationship(back_populates="messages")
