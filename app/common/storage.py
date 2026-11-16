@@ -1,16 +1,11 @@
 from collections.abc import AsyncGenerator, Awaitable
 from pathlib import Path
-from typing import NamedTuple
 from uuid import uuid4
 
 import aiofiles
 
+from app.common.types import MediaPath
 from app.core.settings import settings
-
-
-class MediaPath(NamedTuple):
-    absolute: Path
-    relative: str
 
 
 def build_media_path(
