@@ -177,6 +177,27 @@ class InboundService:
             )
         )
 
+    async def save_image_message(self, ctx: InboundContext) -> None:
+        image = ctx.msg.image
+
+        if image is None:
+            raise ValueError("Image message is not available")
+
+        path = build_media_path(f"inbound/{ctx.message_type}", image.extension)
+
+        message = await self._register_message(self._to_message_create(ctx))
+
+        await save_file_to_path(image.stream(), path.absolute)
+
+        await self._register_media_file(
+            self._to_media_file_create(
+                ctx,
+                message_id=message.id,
+                absolute_path=path.absolute,
+                relative_path=path.relative,
+            )
+        )
+
     async def handle(self, msg: MessageAsync) -> None:
         if await self.message_service.get_by_wa_message_id(msg.id):
             return
@@ -188,6 +209,8 @@ class InboundService:
                 await self.save_message(ctx)
             case MessageType.AUDIO:
                 await self.save_audio_message(ctx)
+            case MessageType.IMAGE:
+                await self.save_image_message(ctx)
             case MessageType.UNSUPPORTED:
                 logger.warning(
                     "Unsupported message from %s: type=%s code=%s details=%s",

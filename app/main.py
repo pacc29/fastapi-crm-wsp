@@ -3,13 +3,10 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
 from app.core.exceptions.handlers import register_exception_handlers
-from app.core.settings import get_settings
 from app.core.whatsapp import create_whatsapp
 from app.db.database import engine
 from app.routers.contacts import contacts_router
 from app.services.whatsapp.webhook import register_handlers
-
-settings = get_settings()
 
 
 @asynccontextmanager
