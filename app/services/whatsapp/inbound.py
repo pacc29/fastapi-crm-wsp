@@ -183,6 +183,15 @@ class InboundService:
     async def save_image_message(self, ctx: InboundContext) -> None:
         await self._save_media_message(ctx)
 
+    async def save_video_message(self, ctx: InboundContext) -> None:
+        await self._save_media_message(ctx)
+
+    async def save_document_message(self, ctx: InboundContext) -> None:
+        await self._save_media_message(ctx)
+
+    async def save_sticker_message(self, ctx: InboundContext) -> None:
+        await self._save_media_message(ctx)
+
     async def handle(self, msg: MessageAsync) -> None:
         if await self.message_service.get_by_wa_message_id(msg.id):
             return
@@ -196,6 +205,12 @@ class InboundService:
                 await self.save_audio_message(ctx)
             case MessageType.IMAGE:
                 await self.save_image_message(ctx)
+            case MessageType.VIDEO:
+                await self.save_video_message(ctx)
+            case MessageType.DOCUMENT:
+                await self.save_document_message(ctx)
+            case MessageType.STICKER:
+                await self.save_sticker_message(ctx)
             case MessageType.UNSUPPORTED:
                 logger.warning(
                     "Unsupported message from %s: type=%s code=%s details=%s",
