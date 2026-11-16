@@ -151,52 +151,37 @@ class InboundService:
     ) -> MediaFile:
         return await self.media_file_service.create(media_file_create)
 
+    async def _save_media_message(self, ctx: InboundContext) -> None:
+        media = ctx.msg.media
+
+        if media is None:
+            raise ValueError("Media not found")
+
+        path = build_media_path(f"inbound/{ctx.message_type}", media.extension)
+
+        message = await self._register_message(self._to_message_create(ctx))
+
+        await save_file_to_path(media.stream(), path.absolute)
+
+        await self._register_media_file(
+            self._to_media_file_create(
+                ctx,
+                message_id=message.id,
+                absolute_path=path.absolute,
+                relative_path=path.relative,
+            )
+        )
+
     async def save_message(self, ctx: InboundContext) -> None:
         message_create = self._to_message_create(ctx)
 
         await self._register_message(message_create)
 
     async def save_audio_message(self, ctx: InboundContext) -> None:
-        audio = ctx.msg.audio
-
-        if audio is None:
-            raise ValueError("Audio message is not available")
-
-        path = build_media_path(f"inbound/{ctx.message_type}", audio.extension)
-
-        message = await self._register_message(self._to_message_create(ctx))
-
-        await save_file_to_path(audio.stream(), path.absolute)
-
-        await self._register_media_file(
-            self._to_media_file_create(
-                ctx,
-                message_id=message.id,
-                absolute_path=path.absolute,
-                relative_path=path.relative,
-            )
-        )
+        await self._save_media_message(ctx)
 
     async def save_image_message(self, ctx: InboundContext) -> None:
-        image = ctx.msg.image
-
-        if image is None:
-            raise ValueError("Image message is not available")
-
-        path = build_media_path(f"inbound/{ctx.message_type}", image.extension)
-
-        message = await self._register_message(self._to_message_create(ctx))
-
-        await save_file_to_path(image.stream(), path.absolute)
-
-        await self._register_media_file(
-            self._to_media_file_create(
-                ctx,
-                message_id=message.id,
-                absolute_path=path.absolute,
-                relative_path=path.relative,
-            )
-        )
+        await self._save_media_message(ctx)
 
     async def handle(self, msg: MessageAsync) -> None:
         if await self.message_service.get_by_wa_message_id(msg.id):
