@@ -12,7 +12,12 @@ class ContactRepository(BaseRepository[Contact]):
     ) -> None:
         super().__init__(session, Contact)
 
-    async def get_by_phone(self, phone: str) -> Contact | None:
-        statement = select(self.model).where(self.model.phone == phone)
+    async def get_by_wa_id(self, wa_id: str) -> Contact | None:
+        statement = select(self.model).where(self.model.wa_id == wa_id)
+        result = await self.session.exec(statement)
+        return result.first()
+
+    async def get_contact_by_bsuid(self, bsuid: str) -> Contact | None:
+        statement = select(self.model).where(self.model.bsuid == bsuid)
         result = await self.session.exec(statement)
         return result.first()

@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import UTC, datetime
 from typing import TYPE_CHECKING
 
 from pywa_async.types.chat import ChatType
@@ -20,7 +20,7 @@ class ConversationBase(BaseSQLModel):
         nullable=False,
     )
     last_inbound_message: datetime = Field(
-        nullable=False, sa_type=DateTime(timezone=True), default=datetime.now()
+        nullable=False, sa_type=DateTime(timezone=True), default=lambda: datetime.now(UTC)
     )
     contact_id: int = Field(
         foreign_key="contacts.id", ondelete="CASCADE", nullable=False

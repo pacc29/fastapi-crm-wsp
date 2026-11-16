@@ -1,4 +1,5 @@
 from functools import lru_cache
+from pathlib import Path
 from urllib.parse import quote_plus
 
 from pydantic import computed_field
@@ -22,6 +23,8 @@ class Settings(BaseSettings):
     WHATSAPP_CALLBACK_URL: str
     WHATSAPP_VALIDATE_UPDATES: bool = True
 
+    MEDIA_ROOT: Path = Path("media")
+
     model_config = SettingsConfigDict(env_file=".env")
 
     @computed_field
@@ -32,4 +35,7 @@ class Settings(BaseSettings):
 
 @lru_cache
 def get_settings() -> Settings:
-    return Settings() # type: ignore
+    return Settings()  # type: ignore
+
+
+settings = get_settings()

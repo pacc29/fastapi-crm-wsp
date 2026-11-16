@@ -10,6 +10,7 @@ from app.core.settings import get_settings
 from app.models.contact import Contact
 from app.models.conversation import Conversation
 from app.models.message import Message
+from app.models.media_file import MediaFile
 
 ####
 

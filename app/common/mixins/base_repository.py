@@ -22,6 +22,11 @@ class BaseRepository[T: BaseModel](ABC):
         await self.session.flush()
         return entity
 
+    async def update(self, entity: T) -> T:
+        self.session.add(entity)
+        await self.session.flush()
+        return entity
+
     async def delete(self, entity: T) -> None:
         await self.session.delete(entity)
         await self.session.flush()

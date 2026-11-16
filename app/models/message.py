@@ -1,5 +1,5 @@
-from datetime import datetime
-from typing import TYPE_CHECKING
+from datetime import UTC, datetime
+from typing import TYPE_CHECKING, Optional
 
 from pywa.types.others import MessageType
 from pywa_async.types.message_status import MessageStatusType
@@ -12,6 +12,7 @@ from app.common.types import JsonB
 
 if TYPE_CHECKING:
     from app.models.conversation import Conversation
+    from app.models.media_file import MediaFile
 
 
 class MessageBase(BaseSQLModel):
@@ -22,7 +23,7 @@ class MessageBase(BaseSQLModel):
     direction: MessageDirection = Field(Enum(MessageDirection), nullable=False)
     status: MessageStatusType = Field(Enum(MessageStatusType), nullable=False)
     created_at: datetime = Field(
-        sa_type=DateTime(timezone=True), nullable=False, default=datetime.now()
+        sa_type=DateTime(timezone=True), nullable=False, default_factory=lambda: datetime.now(UTC)
     )
     message_type: MessageType = Field(
         default=MessageType.TEXT, sa_type=Enum(MessageType), nullable=False
@@ -41,3 +42,4 @@ class MessageBase(BaseSQLModel):
 class Message(BaseModel, MessageBase, table=True):
     __tablename__ = "messages" # type: ignore[assignment]
     conversation: "Conversation" = Relationship(back_populates="messages")
+    media_file: Optional["MediaFile"] = Relationship(back_populates="message")

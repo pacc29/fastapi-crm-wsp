@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import UTC, datetime, timedelta
 
 from sqlmodel import col, select, update
 
@@ -17,7 +17,7 @@ class ConversationRepository(BaseRepository[Conversation]):
             .where(
                 col(Conversation.status) == ConversationStatus.OPEN,
                 col(Conversation.last_inbound_message)
-                <= datetime.now() - timedelta(hours=24),
+                <= datetime.now(UTC) - timedelta(hours=24),
             )
             .values(status=ConversationStatus.CLOSED)
         )

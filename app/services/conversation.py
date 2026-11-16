@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from app.models.conversation import Conversation
 from app.repository.conversation import ConversationRepository
 
@@ -13,13 +15,21 @@ class ConversationService:
         await self._close_expired_conversations()
         return await self.conversation_repository.get_active_conversation(contact_id)
 
-    async def create_conversation(self, contact_id: int) -> Conversation:
+    async def create(self, contact_id: int, *, at: datetime) -> Conversation:
         return await self.conversation_repository.create(
-            Conversation(contact_id=contact_id)
+            Conversation(contact_id=contact_id, last_inbound_message=at)
         )
 
-    async def get_or_create_active_conversation(self, contact_id: int) -> Conversation:
+    async def get_or_create_active_conversation(
+        self, contact_id: int, *, at: datetime
+    ) -> Conversation:
         conversation = await self.get_active_conversation(contact_id)
-        if conversation:
-            return conversation
-        return await self.create_conversation(contact_id)
+
+        if conversation is None:
+            return await self.create(contact_id, at=at)
+
+        if at > conversation.last_inbound_message:
+            conversation.last_inbound_message = at
+            return await self.conversation_repository.update(conversation)
+
+        return conversation
