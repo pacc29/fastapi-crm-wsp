@@ -2,9 +2,7 @@ from fastapi import FastAPI
 from pywa.utils import UserIdentifier
 from pywa_async.client import WhatsApp
 
-from app.core.settings import get_settings
-
-settings = get_settings()
+from app.core.settings import settings
 
 
 def create_whatsapp(app: FastAPI) -> WhatsApp:
